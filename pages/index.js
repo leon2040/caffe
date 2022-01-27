@@ -15,7 +15,7 @@ export default function Home() {
 {/*       <header style={{ display: 'flex', flexDirction: 'left' }} > bootstrap */}
 
       <Header/>
-      <h1> 우리 카페 </h1>
+      <h1> 우리 카페 2호점</h1>
 
       <div className="p-5 mb-4 bg-light rounded-3">
       <div className="container-fluid py-5">
