@@ -5,6 +5,8 @@ import {Fragment, useState, useMemo, useEffect} from 'react';
 import Head from 'next/head';
 import axios from 'axios';
 import useSWR from 'swr';
+import cors  from 'cors';
+
 
 const formatter = Intl.NumberFormat( 'ko-KR' );
 
@@ -15,6 +17,13 @@ const data = [
   { name: '카페라떼', price: 3500 },
   { name: '카페모카', price: 3800 },
 ];
+
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true, 
+};
+
+//app.use(cors(corsOptions));
 
 const fetcher = function( url ) {
   return axios.get( url ).then( response => response.data );
