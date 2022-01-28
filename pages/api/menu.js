@@ -1,7 +1,20 @@
 import fs from 'fs';
 import path from 'path';
+import NextCors from 'cors';
 
-export default function handler(req, res) {
+//export default function handler(req, res) {
+export default async function handler(req, res) {  
+    
+    // Run the cors middleware
+    // nextjs-cors uses the cors package, so we invite you to check the documentation https://github.com/expressjs/cors
+    await NextCors(req, res, {
+    // Options
+        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+        origin: '*',
+        optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    });
+
+
     const file = fs.readFileSync(path.resolve('./assets/menu.csv'), 'utf-8');
     //console.log(file);
 
