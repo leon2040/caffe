@@ -3,8 +3,8 @@ import Header from '../components/header'
 
 import {Fragment, useState, useMemo, useEffect} from 'react';
 import Head from 'next/head';
-//import axios from 'axios';
-//import useSWR from 'swr';
+import axios from 'axios';
+import useSWR from 'swr';
 
 const formatter = Intl.NumberFormat( 'ko-KR' );
 
@@ -17,7 +17,7 @@ const data = [
 ];
 
 const fetcher = function( url ) {
-  //  return axios.get( url ).then( response => response.data );
+  return axios.get( url ).then( response => response.data );
 	// menu.js 를 실행하고, ...csv 파일에서 메뉴와 가격을 새로 받아온다  
 }
 
@@ -25,6 +25,8 @@ const fetcher = function( url ) {
 export default function Order(props) {
     // console.log( 'props.menu', props.menu );
   // [ 읽기전용, 쓰기전용 ] = useState( 기본값 );
+  const [loading, setLoading] = useState(true);
+
   const [ menu, setMenu ] = useState( [] );
   const [ selected, setSelected ] = useState( [] );
 
@@ -33,17 +35,22 @@ export default function Order(props) {
     [ selected ]
   );
 
-  //const { data, error } = useSWR('http://localhost:3000/api/menu', fetcher);
+  const { data, error } = useSWR('http://localhost:3000/api/menu', fetcher);
 
-	const error = false;
+	//const error = false;
 
   useEffect(()=>{
       // fetch( '/api/menu' )
       //     .then( response => response.json() )
-      //     .then( json => setMenu( json ) )
+      //     .then( json => {
+      //       setMenu( json );
+      //       setLoading(false); 
+      //      }
+      //     )
       //     .catch( console.warn )
+      // getServerSideProps 를 사용하므로 ....
       // axios.get( '/api/menu' )
-      //     .then( response => setMenu( response.data ) )
+      //     .then( response => setMenu( response.data ) ) // json 처리 필요없다
       //     .catch( console.warn )
   },[]);
 
@@ -54,6 +61,8 @@ export default function Order(props) {
   if( !data ) { // error == falsy && data == falsy
       return <>로딩중...</>
   }
+
+ // if ( menu === null) return <div>Loading...</div>;
 
   return (
     <div className="container">
@@ -69,7 +78,9 @@ export default function Order(props) {
 
       <dl>
       {
-        data.map( element => (
+          data.map( element => (
+//        menu.map( element => (
+//        props.menu.map( element => (
           <Fragment key={ element.name }> {/* 구분자를 넣어 중복된 이름을 구분할 수 있도록 */}
             <dt>{ element.name }</dt>
             <dd>
@@ -113,6 +124,7 @@ export default function Order(props) {
   )
 }
 
+// 서버 사이드에서만 동작하는  getServerSideProps() 
 // export async function getServerSideProps(context) {
 //     const response = await axios.get('http://localhost:3000/api/menu');
 //     return {

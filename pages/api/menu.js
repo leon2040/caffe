@@ -3,6 +3,8 @@ import path from 'path';
 
 export default function handler(req, res) {
     const file = fs.readFileSync(path.resolve('./assets/menu.csv'), 'utf-8');
+    //console.log(file);
+
     const rows = file.split('\n');
     const json = [];
     rows.forEach(row => {
@@ -14,4 +16,5 @@ export default function handler(req, res) {
         });
     });
     res.status(200).json(json);
+    //console.log(json);
 }
